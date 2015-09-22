@@ -57,15 +57,16 @@ public class MongoAdminService {
 	public DB createDatabase(String databaseName) throws MongoServiceException {
 		try {
 			DB db = client.getDB(databaseName);
-			
+			// cap the DB at 2GB
+			BasicDBObject options = new BasicDBObject("capped", false);
+			options.append("size", 0);
 			// save into a collection to force DB creation.
-			DBCollection col = db.createCollection("foo", null);
+			DBCollection col = db.createCollection("foo", options);
 			BasicDBObject obj = new BasicDBObject();
 			obj.put("foo", "bar");
 			col.insert(obj);
 			// drop the collection so the db is empty
 			col.drop();
-			
 			return db; 
 		} catch (MongoException e) {
 			// try to clean up and fail

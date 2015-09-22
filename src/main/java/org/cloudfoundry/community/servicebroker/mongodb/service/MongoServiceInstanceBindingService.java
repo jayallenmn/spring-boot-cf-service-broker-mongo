@@ -11,6 +11,8 @@ import org.cloudfoundry.community.servicebroker.mongodb.repository.MongoServiceI
 import org.cloudfoundry.community.servicebroker.service.ServiceInstanceBindingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.util.UUID;
+import org.apache.commons.lang3.RandomStringUtils;
 
 /**
  * Mongo impl to bind services.  Binding a service does the following:
@@ -48,7 +50,11 @@ public class MongoServiceInstanceBindingService implements ServiceInstanceBindin
 		String database = serviceInstance.getId();
 		String username = bindingId;
 		// TODO Password Generator
-		String password = "password";
+//		String password = "password";
+//		String password = UUID.randomUUID().toString();
+		String password = RandomStringUtils.randomAlphanumeric(10);
+		
+		System.out.println("Random password is " + password);
 		
 		// TODO check if user already exists in the DB
 
